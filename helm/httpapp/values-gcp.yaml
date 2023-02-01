@@ -1,0 +1,30 @@
+# Default values for httpapp.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+namespace : httpapp
+replicaCount: 2
+
+image:
+  repository: us.gcr.io/mysampleappproj1-ffgd12345/httpapp
+  pullPolicy: Always
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "latest"
+
+service:
+  type: LoadBalancer
+  port: 80
+
+envs:
+  DBPASS:
+    secret: httpapp-dbpass
+    key: password
+  DBNAME: sampleappdb
+  DBHOST: 
+  DBVERSION: MSSQL
+  DBPORT: 1433
+  DBUSER: applogin
+
+dbsecretname: httpapp-dbpass
+#dbsecretpassword: 
+# helm install httpapp httpapp --values httpapp/values.yaml --set dbsecretpassword=$PASSWORD
+#helm upgrade httpapp httpapp --values httpapp/values.yaml --set dbsecretpassword=$PASSWORD

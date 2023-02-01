@@ -1,0 +1,118 @@
+---
+global:
+  owner: None
+  location: "US"
+  regions:
+  - &primaryregion "us-central1"
+  - &drregion "us-east4"
+  remote_state:
+    bucket_name: "tfstateremote10xxx"
+  db_password: &common_password stays-overhung-reconcile #replace this value 
+  billing_account: 00E11A-*****AA #replace this value also in ../../terraform/gcp/rundir_init/init.tf
+  project:
+    parent: folders/54289XXXX #replace this value also in ../../terraform/gcp/rundir_init/init.tf
+    name: mysampleappproj1-ffgd #replace this value
+    id: mysampleappproj1-ffgd12345 #replace this value
+  service_perimeters: []
+  services:
+  - container.googleapis.com
+  - sql-component.googleapis.com
+  - dns.googleapis.com
+  - servicenetworking.googleapis.com
+  - compute.googleapis.com
+  - iam.googleapis.com
+  - logging.googleapis.com
+  - monitoring.googleapis.com
+  - sqladmin.googleapis.com
+  - securetoken.googleapis.com
+  - cloudfunctions.googleapis.com
+  - cloudbuild.googleapis.com
+  - cloudapis.googleapis.com
+  terraform_deployment_account: tf-deploy-sa
+  terraform_deployment_sa_roles:
+  - roles/container.clusterAdmin
+  - roles/cloudsql.admin
+  - roles/container.admin
+  userDefinedString: appproject101
+  additionalUserDefinedString: ''
+  assign-roles: []
+  name_prefix:
+    - sampleapp
+  labels:
+    solutionprovider: harinder
+    solution: sampleapp
+
+prod_workloads:
+  prd:
+    region: *primaryregion
+    name:
+      - prodprimary
+      - prd
+    labels:
+      env: prodprimary
+
+    gke:
+      name: 
+        - gkeue
+      admin_username: gke_admin
+      kubernetes_version: "1.24.6"
+      node_count_per_ig: 1
+      gke_agent_vm_size: "e2-medium" # 8 core / 32GB
+      zones:
+        - "a"
+        - "b"
+    gcr: 
+      name: 
+        - sampleappgcr
+      sku: "Standard"
+    cldsqlserver:
+      name: dbserver-1
+      dbs:
+        db1:
+          name: sampleappdb
+          login: appuser
+          user: appuser
+          sku: GP_S_Gen5_2       
+      admin_login: sqlserver
+      admin_password: *common_password
+      dblogins:
+        db1:
+          name: applogin
+          password: *common_password
+        db2:
+          name: sqlserver
+          password: *common_password
+      readreplica: 
+        replica1:
+          name: "replica1"
+          region: *drregion
+    logicapp:
+      name: sqlloginuserconnectorue
+
+  prddr:
+    region: *drregion
+    name:
+      - proddr
+      - prd
+    labels:
+      env: proddr
+    gke:
+      name: 
+        - gkeue2
+      # can be reset - placeholder public SSH key
+      admin_username: gke_admin
+      kubernetes_version: "1.24.6"
+      node_count_per_ig: 1
+      gke_agent_vm_size: "e2-medium" # 8 core / 32GB
+      zones:
+        - "b"
+        - "c"
+    gcr: 
+      name: 
+        - sampleappgcr
+      sku: "Standard"
+    loadbalancer:
+      name: tfmsample
+      primary_url: "sampleappprodsample.sampleapp.local"
+      dr_url: "sampleappproddrsample.sampleapp.local"
+      app_url: "sampleappprod.sampleapp.local"

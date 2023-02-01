@@ -1,0 +1,86 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "workflows_sqlloginuserconnectorue_name": {
+            "defaultValue": "sqlloginuserconnectorue",
+            "type": "String"
+        },
+        "connections_sqlloginuserconnectorue_acn_externalid": {
+            "defaultValue": "",
+            "type": "String"
+        },
+        "managedapi_id": {
+            "defaultValue": "",
+            "type": "String"
+        },
+        "location": {
+            "defaultValue": "",
+            "type": "String"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Logic/workflows",
+            "apiVersion": "2017-07-01",
+            "name": "[parameters('workflows_sqlloginuserconnectorue_name')]",
+            "location": "[parameters('location')]",
+            "properties": {
+                "state": "Enabled",
+                "definition": {
+                    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+                    "contentVersion": "1.0.0.0",
+                    "parameters": {
+                        "$connections": {
+                            "defaultValue": {},
+                            "type": "Object"
+                        }
+                    },
+                    "triggers": {
+                        "Recurrence": {
+                            "recurrence": {
+                                "frequency": "Minute",
+                                "interval": 2
+                            },
+                            "evaluatedRecurrence": {
+                                "frequency": "Minute",
+                                "interval": 2
+                            },
+                            "type": "Recurrence"
+                        }
+                    },
+                    "actions": {
+                        "connectloginusername": {
+                            "runAfter": {},
+                            "type": "ApiConnection",
+                            "inputs": {
+                                "body": {
+                                    "query": "ALTER USER appuser WITH LOGIN = appuser;"
+                                },
+                                "host": {
+                                    "connection": {
+                                        "name": "@parameters('$connections')['sql']['connectionId']"
+                                    }
+                                },
+                                "method": "post",
+                                "path": "/v2/datasets/@{encodeURIComponent(encodeURIComponent('default'))},@{encodeURIComponent(encodeURIComponent('default'))}/query/sql"
+                            }
+                        }
+                    }
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "sql": {
+                                "connectionId": "[parameters('connections_sqlloginuserconnectorue_acn_externalid')]",
+                                "connectionName": "[concat(parameters('workflows_sqlloginuserconnectorue_name'), '-acn')]",
+                                "id": "[parameters('managedapi_id')]"
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

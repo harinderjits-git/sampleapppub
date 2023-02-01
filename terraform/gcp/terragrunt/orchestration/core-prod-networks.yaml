@@ -1,0 +1,68 @@
+---
+internal:
+  additionalUserDefinedString: ~
+  billing_account: 00E11A-0AB9A2-077BE7
+  services:
+    - logging.googleapis.com
+    - servicenetworking.googleapis.com
+    - dns.googleapis.com
+    - container.googleapis.com
+    - cloudapis.googleapis.com
+    - cloudresourcemanager.googleapis.com
+    - monitoring.googleapis.com
+  userDefinedString: coreprodnet0101
+  dns:
+    type: private
+    name: internalprivdns
+    domain: sampleapp.local.
+    description: "private dns zone"
+    # recordsets:
+    #   - name: "ns"
+    #     type: "A"
+    #     ttl : 300
+    #     records: 
+    #       - "127.0.0.1"
+  networks:
+  - network_name: "internalnet"
+    routing_mode: "GLOBAL"
+    auto_create_subnetworks: false
+    subnets:
+    - subnet_name: "subnet01-usc"
+      subnet_ip: 10.150.0.0/16
+      subnet_region: "us-central1"
+      subnet_private_access: true
+      subnet_flow_logs: true
+      description: "Production Internal Network"
+      secondary_ip_ranges:
+      - range_name: "subnet-01-secondary-01"
+        ip_cidr_range: 10.151.0.0/16
+      - range_name: "subnet-01-secondary-02"
+        ip_cidr_range: 10.152.0.0/16
+    - subnet_name: "subnet01-use"
+      subnet_ip: 10.160.0.0/16
+      subnet_region: "us-east4"
+      subnet_private_access: true
+      subnet_flow_logs: true
+      description: "Production Internal Network"
+      secondary_ip_ranges:
+      - range_name: "subnet-01-secondary-01"
+        ip_cidr_range: 10.161.0.0/16
+      - range_name: "subnet-01-secondary-02"
+        ip_cidr_range: 10.162.0.0/16
+    routes:
+    - route_name: "egress-internet"
+      description: "route through IGW to access internet"
+      destination_range: "0.0.0.0/0"
+      tags: "egress-inet"
+      next_hop_internet: true
+    routers:
+    - router_name: "router01"
+      description: "Router Required for NAT GW"
+      region: "us-central1"
+      bgp:
+        asn: 65516
+    nat:
+    - nat_name: "nat01"
+      region: "us-central1"
+    private_service_address_prefix_length: 16
+    private_service_address_range: 10.140.0.0
