@@ -25,7 +25,7 @@ resource "google_sql_database_instance" "this" {
   region           = var.region
 
   deletion_protection = false
-
+  encryption_key_name = google_kms_crypto_key.key.id
   root_password = var.admin_password
   # labels = var.labels
   settings {

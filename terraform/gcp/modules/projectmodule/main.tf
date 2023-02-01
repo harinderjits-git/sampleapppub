@@ -25,7 +25,7 @@ resource "google_project_service" "project_services" {
   service                    = each.value
   disable_on_destroy         = var.service_config.disable_on_destroy
   disable_dependent_services = var.service_config.disable_dependent_services
-  
+
 }
 
 
@@ -33,4 +33,11 @@ resource "google_service_account" "default" {
   account_id   = "gkek8ssa"
   display_name = "k8s Service Account"
   project      = google_project.project.project_id
+}
+
+
+resource "google_project_service_identity" "gcp_sa_cloud_sql" {
+  provider = google-beta
+  service  = "sqladmin.googleapis.com"
+  project  = google_project.project.project_id
 }

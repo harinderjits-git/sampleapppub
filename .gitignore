@@ -23,3 +23,5 @@ ssl/
 *.terraform*
 *terraform.tfstate*
 *.terragrunt*
+terraform/gcp/terragrunt/orchestration/config_env_sampleapp.yaml
+terraform/gcp/rundir_init/init.tf

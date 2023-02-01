@@ -28,7 +28,7 @@ resource "google_sql_database_instance" "readreplica" {
   master_instance_name = data.google_sql_database_instance.this.name
   region               = each.value.region
   database_version     = var.database_version
-
+  encryption_key_name = google_kms_crypto_key.key.id
   replica_configuration {
     failover_target = false
   }

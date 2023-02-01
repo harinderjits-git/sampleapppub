@@ -1,2 +1,4 @@
 
-// Used when setting up the GKE cluster to talk to sql.
+output "kms_sa" {
+  value = google_project_service_identity.gcp_sa_cloud_sql.email
+}
