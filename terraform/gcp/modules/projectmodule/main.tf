@@ -35,6 +35,19 @@ resource "google_service_account" "default" {
   project      = google_project.project.project_id
 }
 
+resource "google_service_account" "configconnectorsa" {
+  account_id   = "configconnectorsa"
+  display_name = "config connector sa"
+  project      = google_project.project.project_id
+}
+resource "google_project_iam_binding" "project" {
+  project = google_project.project.project_id
+  role    = "roles/editor"
+
+  members = [
+    "serviceAccount:${google_service_account.configconnectorsa.email}",
+  ]
+}
 
 resource "google_project_service_identity" "gcp_sa_cloud_sql" {
   provider = google-beta

@@ -155,3 +155,33 @@ resource "google_container_node_pool" "private-np-1" {
     data.google_service_account.default
   ]
 }
+
+
+
+
+data  "google_service_account" "configconnectorsa" {
+  account_id   = "configconnectorsa"
+  project      = var.project
+}
+
+
+resource "time_sleep" "wait_60_seconds" {
+  depends_on = [google_container_node_pool.private-np-1]
+
+  create_duration = "120s"
+}
+
+resource "google_service_account_iam_binding" "configconnectorsa-binding" {
+  service_account_id = data.google_service_account.configconnectorsa.name
+  role               = "roles/iam.workloadIdentityUser"
+  members = [
+ # for namespaced mode "serviceAccount:${var.project}.svc.id.goog[cnrm-system/cnrm-controller-manager-dbtest]",
+    "serviceAccount:${var.project}.svc.id.goog[cnrm-system/cnrm-controller-manager]"
+  ]
+  depends_on = [
+    google_container_node_pool.private-np-1,
+    time_sleep.wait_60_seconds
+
+  ]
+}
+
