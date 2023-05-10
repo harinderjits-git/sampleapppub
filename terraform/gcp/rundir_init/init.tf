@@ -23,7 +23,8 @@ module "project" {
   ,"securetoken.googleapis.com"
   ,"cloudfunctions.googleapis.com"
   ,"cloudbuild.googleapis.com"
-  ,"cloudapis.googleapis.com"]
+  ,"cloudapis.googleapis.com"
+  ,"cloudkms.googleapis.com"]
 }
 
 
