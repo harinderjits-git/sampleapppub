@@ -8,7 +8,7 @@ resource "google_project_service_identity" "gcp_sa_cloud_sql" {
 
 resource "google_kms_key_ring" "keyring" {
   provider = google-beta
-  name     = "${var.name}-keyring"
+  name     = "${var.name}-keyring4"
   location = var.region
   project  = var.project
 }

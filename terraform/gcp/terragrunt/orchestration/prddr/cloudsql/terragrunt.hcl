@@ -5,9 +5,9 @@ locals {
   network         = yamldecode(file("${get_terragrunt_dir()}/../../core-prod-networks.yaml"))
 }
 
-dependency "master" {
-  config_path = "../../prd/cloudsql"
-}
+# dependency "master" {
+#   config_path = "../../prd/cloudsql"
+# }
 
 dependency vpc {
   config_path = "../../base_infra/vpc"
@@ -25,10 +25,10 @@ inputs = {
   labels     = merge(local.env_config.global.labels, local.environment.labels)
   project = local.env_config.global.project.id
   network_name = local.network.internal.networks[0].network_name
-  master_instance_name = dependency.master.outputs.sql_instance
+  #master_instance_name = dependency.master.outputs.sql_instance
   region = local.environment.region
   readreplica = local.env_config.prod_workloads.prd.cldsqlserver.readreplica
- 
+  master_instance_name = "sampleappprodprimarydbserver-1-primary"
 }
 
 # Generate a special provider.tf to address the generation of dual provider configuration because

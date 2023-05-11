@@ -4,10 +4,10 @@ module "project" {
     "solutionprovider" = "harinder"
     "solution"         = "sampleapp"
   }
-  parent          = "folders/54XXXX" #replace this
-  project_name    = "mysampleappproj1-ffgd"
-  project_id      = "mysampleappproj1-ffgd12345"
-  billing_account = "00E11A-XXXX" #replace this
+  parent          = "folders/446826717580" #replace this
+  project_name    = "mysampleappproj1-86868"
+  project_id      = "mysampleappproj1-f68685"
+  billing_account = "00E11A-0AB9A2-077BE7" #replace this
   services        = [
   "sqladmin.googleapis.com",
   "containerregistry.googleapis.com"
@@ -23,7 +23,8 @@ module "project" {
   ,"securetoken.googleapis.com"
   ,"cloudfunctions.googleapis.com"
   ,"cloudbuild.googleapis.com"
-  ,"cloudapis.googleapis.com"]
+  ,"cloudapis.googleapis.com"
+  ,"cloudkms.googleapis.com"]
 }
 
 
@@ -33,7 +34,7 @@ module "bucket" {
     solutionprovider = "harinder"
     solution         = "sampleapp"
   }
-  project_id = "mysampleappproj1-ffgd12345"
+  project_id = "mysampleappproj1-f68685"
   location   = "US"
   bucketname = "tfstateremote10xxx"
   depends_on = [

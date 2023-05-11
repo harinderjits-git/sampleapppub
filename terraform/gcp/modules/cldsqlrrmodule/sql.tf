@@ -25,13 +25,13 @@ resource "google_sql_database_instance" "readreplica" {
   }
   project              = var.project
   name                 = "${data.google_sql_database_instance.this.name}-${each.value.name}"
-  master_instance_name = data.google_sql_database_instance.this.name
+ # master_instance_name = data.google_sql_database_instance.this.name
   region               = each.value.region
   database_version     = var.database_version
   encryption_key_name = google_kms_crypto_key.key.id
-  replica_configuration {
-    failover_target = false
-  }
+  # replica_configuration {
+  #   failover_target = false
+  # }
 
   settings {
     tier              = "db-custom-2-13312"

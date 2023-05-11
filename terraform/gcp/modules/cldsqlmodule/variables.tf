@@ -23,7 +23,11 @@ variable "name" {
   type        = string
   default     = "private-cluster-1"
 }
-
+variable "master_instance_name" {
+  description = "The name to give the new sql cluster."
+  type        = string
+  default     = "private-cluster-1"
+}
 variable "labels" {
   type        = map(string)
 

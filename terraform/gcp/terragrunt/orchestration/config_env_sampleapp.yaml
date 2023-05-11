@@ -8,11 +8,11 @@ global:
   remote_state:
     bucket_name: "tfstateremote10xxx"
   db_password: &common_password stays-overhung-reconcile #replace this value 
-  billing_account: 00E11A-*****AA #replace this value also in ../../terraform/gcp/rundir_init/init.tf
+  billing_account: 00E11A-0AB9A2-077BE7 #replace this value also in ../../terraform/gcp/rundir_init/init.tf
   project:
-    parent: folders/54289XXXX #replace this value also in ../../terraform/gcp/rundir_init/init.tf
-    name: mysampleappproj1-ffgd #replace this value
-    id: mysampleappproj1-ffgd12345 #replace this value
+    parent: folders/446826717580 #replace this value also in ../../terraform/gcp/rundir_init/init.tf
+    name: mysampleappproj1-86868 #replace this value
+    id: mysampleappproj1-f68685 #replace this value
   service_perimeters: []
   services:
   - container.googleapis.com

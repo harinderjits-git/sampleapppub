@@ -9,7 +9,11 @@ dependency vpc {
   config_path = "../../base_infra/vpc"
   skip_outputs = true
 }
+dependency master {
 
+  config_path = "../../prddr/cloudsql"
+
+}
 terraform {
   source = "../../../../modules/cldsqlmodule"
 
@@ -29,7 +33,7 @@ inputs = {
   administrator_login = local.environment.cldsqlserver.admin_login
   administrator_login_password = local.environment.cldsqlserver.admin_password
   dblogins = local.environment.cldsqlserver.dblogins
- 
+ master_instance_name = dependency.master.outputs.sql_instance
 }
 
 # Generate a special provider.tf to address the generation of dual provider configuration because
